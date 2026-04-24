@@ -3,37 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>記事ページ切替（ワイド＆コンパクト版）</title>
+    <title>記事ページ切替（コンパクト版）</title>
     <style>
         * { box-sizing: border-box; }
 
-        /* 全体を1000pxに固定し、中央に寄せる設定 */
         body { 
             font-family: sans-serif; 
             background-color: #ffffff; 
             margin: 0;
-            padding: 20px 0; /* 左右の余白はコンテナで制御 */
+            padding: 20px;
             font-size: 20px; 
             color: #333;
-            display: flex;
-            justify-content: center;
         }
 
+        /* 横幅を800pxに固定 */
         .container {
             width: 100%;
-            max-width: 1000px; /* マイライフチェックと同じ幅 */
+            max-width: 800px; 
             margin: 0 auto;
-            padding: 0 20px; /* スマホ時の端の余白 */
         }
 
-        /* 検索窓 */
         .search-container {
             text-align: center;
             margin-bottom: 15px; 
         }
         #searchInput {
             width: 100%;
-            max-width: 600px;
+            max-width: 500px; /* 枠に合わせて少し絞る */
             padding: 10px 20px;
             font-size: 18px;
             border: 2px solid #007bff;
@@ -41,7 +37,6 @@
             outline: none;
         }
 
-        /* ページネーション */
         .pagination {
             display: flex;
             flex-wrap: wrap; 
@@ -79,7 +74,6 @@
             padding-bottom: 5px;
             margin-top: 10px;
         }
-
         .titles { margin-bottom: 20px; padding-left: 0; }
         .titles li { 
             margin: 12px 0; 
@@ -106,6 +100,7 @@
         }
 
         @media (max-width: 600px) {
+            body { padding: 15px; }
             .pagination button {
                 flex: 1 1 20%; 
                 padding: 10px 5px;
@@ -116,7 +111,7 @@
 <body>
 
 <div class="container">
-    <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" style="display: block; margin: auto; max-width: 100%;">
+    <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" style="display: block; margin: auto; max-width: 100%; height: auto;">
     
     <p style="text-align:center; font-weight:bold; line-height:1.4; margin:10px 0;">
         <span style="font-size: 21px; color: #0000ff;">「知らない」はリスク</span>
@@ -129,9 +124,9 @@
     </h2>
     
     <div style="text-align: center;">
-        【考えるのは、今。安心するのは、これから。】<br>
-        【迷わせない準備が、いちばんの優しさ。】<br>
-        【これからを整える、最高の「ありがとう」のために。】
+    【考えるのは、今。安心するのは、これから。】<br>
+    【迷わせない準備が、いちばんの優しさ。】<br>
+    【これからを整える、最高の「ありがとう」のために。】
     </div>
     <br>
 
@@ -151,20 +146,19 @@
 
     <span style="font-size: 18px;"><b>今回のアプリは如何だったでしょうか？他にも使えるアプリ、脳トレができるゲームや趣味に俳句、和歌などが利用できるサイトをご案内します。また大事な記録をサーバーに残せるサイトで、何かあった時に情報開示も指定できるサイトです。スマホのID、PWを記録しておくと安心です。</b></span><p><br></p>
 
-    <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012085.jpg" style="display: block; margin: auto; max-width: 100%;"><br>
+    <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012085.jpg" style="display: block; margin: auto; max-width: 100%; height: auto;"><br>
 
     <div style="text-align: center;"><b>以下より体験版をご確認ください。</b></div>
     <p style="text-align: center; "><img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012100.jpg" style="width: 200px;"></p>
-    <div style="text-align: center;"><a href="https://life-supporter.jp/lp/HRSuykFf" style="color: rgb(0, 0, 255); font-size: 20px;">https://life-supporter.jp/lp/HRSuykFf</a></div>
+    <div style="text-align: center;"><a href="https://life-supporter.jp/lp/HRSuykFf" style="color: rgb(0, 0, 255); font-size: 20px; text-decoration: underline;">https://life-supporter.jp/lp/HRSuykFf</a></div>
     <p><br></p>
 </div>
 
 <script>
+// ==== 記事データ ====
 const articles = [
-    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？...（以下略）" },
-    { title: "2、任意後見契約とはなんですか？", content: "任意後見契約とはなんですか？...（以下略）" },
-    { title: "3、献体とはどういう事をするのですか？", content: "献体とはどういう事をするのですか？...（以下略）" },
-    { title: "152、墓終い（墓じまい）とはなんですか？", content: "墓終い（墓じまい）とはなんですか？...（以下略）" }
+    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "（中身は省略）" },
+    { title: "152、墓終い（墓じまい）とはなんですか？", content: "（中身は省略）" }
 ];
 
 let filteredArticles = articles;
@@ -210,7 +204,7 @@ function render() {
         btn.onclick = () => {
             currentPage = i;
             render();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: searchInput.offsetTop - 20, behavior: 'smooth' });
         };
         pagination.appendChild(btn);
     }
