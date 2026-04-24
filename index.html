@@ -3,131 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>未来へのヒント - 1000pxワイドレイアウト</title>
+    <title>未来へのヒント - 終活サポート</title>
     <style>
         * { box-sizing: border-box; }
         body { 
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            background-color: #f0f2f5;
+            background-color: #f4f7f9;
             margin: 0; padding: 0; color: #333;
-            display: flex;
-            justify-content: center;
+            display: flex; justify-content: center;
         }
 
         .container {
-            /* 横幅を1000pxに設定 */
-            width: 100%;
-            max-width: 1000px; 
-            background-color: #fff;
-            padding: 30px;
-            min-height: 100vh;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            width: 100%; max-width: 1000px; 
+            background-color: #fff; padding: 40px 30px;
+            min-height: 100vh; box-shadow: 0 0 30px rgba(0,0,0,0.05);
         }
 
-        /* ヘッダー・画像エリア */
-        .header-area {
-            text-align: center;
-            margin-bottom: 25px;
+        /* メッセージエリア */
+        .message-section {
+            text-align: center; margin-bottom: 40px; padding: 20px;
+            border-left: 5px solid #007bff; background: #f0f7ff;
         }
+        .copy-main { font-size: 24px; font-weight: bold; color: #007bff; margin-bottom: 10px; }
+        .copy-sub { font-size: 20px; font-weight: bold; color: #444; margin-bottom: 5px; }
+
         .header-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .intro-text {
-            margin-top: 20px;
-            font-size: 16px;
-            color: #666;
-            line-height: 1.6;
-            text-align: left;
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
+            max-width: 100%; height: auto; border-radius: 15px;
+            margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
-        /* 検索ボックス */
+        /* 検索・一覧エリア */
         .search-box {
             position: sticky; top: 0; background: #fff;
-            padding: 15px 0; z-index: 100;
-            border-bottom: 1px solid #eee;
+            padding: 20px 0; z-index: 100; border-bottom: 2px solid #eee;
         }
         #searchInput {
-            width: 100%; padding: 15px 25px; font-size: 18px;
-            border: 2px solid #007bff; border-radius: 35px; outline: none;
-            box-shadow: 0 2px 5px rgba(0,123,255,0.1);
+            width: 100%; padding: 18px 25px; font-size: 18px;
+            border: 2px solid #007bff; border-radius: 40px; outline: none;
         }
 
-        /* ページネーション */
-        .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 20px 0; }
+        .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 25px 0; }
         .pagination button {
-            padding: 8px 16px; border: 1px solid #007bff; background: #fff;
-            color: #007bff; border-radius: 6px; cursor: pointer; font-size: 16px;
-            transition: 0.2s;
+            padding: 10px 18px; border: 1px solid #007bff; background: #fff;
+            color: #007bff; border-radius: 8px; cursor: pointer; font-size: 16px;
         }
         .pagination button.active { background: #007bff; color: #fff; font-weight: bold; }
-        .pagination button:hover:not(.active) { background: #e9f5ff; }
 
-        /* タイトルリスト表示エリア */
         .list-container {
-            border: 1px solid #ddd; border-radius: 12px;
-            max-height: 450px; overflow-y: auto; 
+            border: 1px solid #ddd; border-radius: 15px;
+            max-height: 500px; overflow-y: auto; 
             margin-bottom: 30px; background: #fafafa;
         }
         .titles { margin: 0; padding: 0; list-style: none; }
         .titles li { 
-            padding: 18px 25px; cursor: pointer; border-bottom: 1px solid #eee;
-            font-size: 19px; color: #0000ee; text-decoration: underline;
-            line-height: 1.5; transition: 0.2s;
+            padding: 20px 30px; cursor: pointer; border-bottom: 1px solid #eee;
+            font-size: 20px; color: #0000ee; text-decoration: underline; line-height: 1.5;
         }
-        .titles li:hover { background-color: #f0f7ff; color: #0056b3; }
-        .titles li.active-item { 
-            background-color: #007bff; color: #fff; 
-            text-decoration: none; font-weight: bold;
-        }
+        .titles li:hover { background-color: #f0f7ff; }
+        .titles li.active-item { background-color: #007bff; color: #fff; text-decoration: none; font-weight: bold; }
 
         /* 詳細カード */
         .detail-card {
-            border: 3px solid #007bff; border-radius: 20px;
-            overflow: hidden; display: none;
-            background: #fff; box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            margin-bottom: 60px;
-            animation: slideUp 0.4s ease-out;
+            border: 3px solid #007bff; border-radius: 20px; overflow: hidden;
+            display: none; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-bottom: 50px; animation: fadeIn 0.5s ease;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .detail-header {
-            background-color: #f0f7ff; padding: 25px; font-size: 22px;
-            font-weight: bold; border-bottom: 2px solid #007bff; color: #007bff;
-        }
-        .detail-body { padding: 35px; font-size: 20px; line-height: 1.9; color: #444; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .detail-header { background-color: #f0f7ff; padding: 25px; font-size: 24px; font-weight: bold; color: #007bff; border-bottom: 2px solid #007bff; }
+        .detail-body { padding: 40px; font-size: 21px; line-height: 1.9; color: #333; }
 
-        /* スマホ向け調整 */
+        /* フッター案内エリア */
+        .footer-info {
+            background: #f8f9fa; border-radius: 20px; padding: 40px;
+            margin-top: 60px; line-height: 1.8; font-size: 18px; color: #444;
+        }
+        .footer-info p { margin-bottom: 20px; }
+        .cta-button {
+            display: block; width: 100%; max-width: 400px; margin: 30px auto 0;
+            padding: 20px; background: #ff6f61; color: #fff; text-align: center;
+            text-decoration: none; font-size: 22px; font-weight: bold;
+            border-radius: 50px; box-shadow: 0 4px 15px rgba(255,111,97,0.4);
+            transition: 0.3s;
+        }
+        .cta-button:hover { transform: translateY(-3px); background: #ff5242; }
+
         @media (max-width: 600px) {
-            .container { padding: 15px; }
-            .detail-body { font-size: 18px; padding: 20px; }
-            .titles li { font-size: 17px; padding: 15px; }
-            #searchInput { font-size: 16px; }
+            .container { padding: 20px 15px; }
+            .copy-main { font-size: 20px; }
+            .copy-sub { font-size: 16px; }
+            .detail-body { font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header-area">
-        <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" class="header-image" alt="メインビジュアル">
-        <h2 style="font-size: 28px; color: #007bff; margin: 20px 0 10px;">未来へのヒント一覧</h2>
-        
-        <div class="intro-text">
-            このページでは、終活や介護、相続に関する「知っておきたいヒント」を一覧でご紹介しています。<br>
-            気になるタイトルをクリックすると、その下に詳細内容が表示されます。キーワード検索も活用してください。
-        </div>
+    <div class="message-section">
+        <div class="copy-main">「知らない」はリスク、「知る」はギフト。</div>
+        <div class="copy-sub">【考えるのは、今。安心するのは、これから。】</div>
+        <div class="copy-sub">【迷わせない準備が、いちばんの優しさ。】</div>
+        <div class="copy-sub">【これからを整える、最高の「ありがとう」のために。】</div>
+    </div>
+
+    <div style="text-align: center;">
+        <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" class="header-image">
+        <h1 style="color: #007bff; font-size: 32px;">未来へのヒント</h1>
     </div>
 
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="例：介護、保険、相続など...">
+        <input type="text" id="searchInput" placeholder="気になる言葉を入力してください（例：介護、相続）">
     </div>
 
     <div id="pagination" class="pagination"></div>
@@ -140,16 +124,25 @@
         <div class="detail-header" id="targetTitle"></div>
         <div class="detail-body" id="targetContent"></div>
     </div>
+
+    <div class="footer-info">
+        <p>
+            今回のアプリは如何だったでしょうか？他にも使えるアプリ、脳トレができるゲームや趣味に俳句、和歌などが利用できるサイトをご案内します。
+        </p>
+        <p>
+            また大事な記録をサーバーに残せるサイトで、何かあった時に情報開示も指定できるサイトです。スマホのID、PWを記録しておくと安心です。
+        </p>
+        <p style="font-weight: bold; text-align: center;">以下より体験版をご確認ください。</p>
+        <a href="https://life-supporter.jp/lp/HRSuykFf" class="cta-button" target="_blank">体験版を確認する</a>
+    </div>
 </div>
 
 <script>
-// 記事データ
 const articles = [
-    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。<br><br>まずは市町村役場へ行き、要介護認定の申請を行いましょう。窓口で相談すれば、手続きの流れを丁寧に案内してもらえます。" },
-    { title: "2、任意後見契約とはなんですか？", content: "将来、認知症などで自分の判断能力が低下した時に備え、あらかじめ自分の代わりに財産管理や契約手続きをしてもらう人を決めておく契約です。公正証書で作成することで、将来の安心を法的に担保できます。" },
-    { title: "3、献体とはどういう事をするのですか？", content: "医学の教育や研究の発展のために、ご自身の死後に遺体を無償で提供することです。生前に大学や関連団体へ登録し、ご家族の承諾を得ておくことが必須となります。" },
-    // 85番まで続く...
-    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "要介護認定を受ける際、市区町村は主治医に「意見書」を求めます。日頃の健康状態や生活上の不自由さをよく知る「かかりつけ医」がいることで、実態に即した正確な判定を受けやすくなります。" }
+    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。<br><br>まずは市町村役場へ行き、要介護認定の申請を行いましょう。窓口で相談すれば丁寧に案内してもらえます。" },
+    { title: "2、任意後見契約とはなんですか？", content: "将来、認知症などで判断能力が低下した時に備え、自分の代わりに財産管理などをしてもらう人をあらかじめ決めておく契約です。公正証書で作成します。" },
+    { title: "3、献体とはどういう事をするのですか？", content: "医学の発展のために、死後に自分の遺体を提供することです。生前登録と家族の同意が必要です。" },
+    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "要介護認定の際、医師の意見書が必要です。普段の様子をよく知る医師がいることで、より正確な判定を受けられます。" }
 ];
 
 let filtered = [...articles];
@@ -183,29 +176,17 @@ function renderPager() {
         const b = document.createElement('button');
         b.textContent = i;
         if (i === page) b.className = 'active';
-        b.onclick = () => { 
-            page = i; 
-            render(); 
-            // ページ切り替え時は少しスクロールを戻す
-            document.querySelector('.search-box').scrollIntoView({ behavior: 'smooth' });
-        };
-        navLink(b);
+        b.onclick = () => { page = i; render(); };
         pager.appendChild(b);
     }
 }
-
-function navLink(btn) {} // プレースホルダ
 
 function showDetail(item) {
     const view = document.getElementById('detailView');
     document.getElementById('targetTitle').textContent = item.title;
     document.getElementById('targetContent').innerHTML = item.content;
     view.style.display = 'block';
-    
-    // カードが画面中央付近に来るようにスムーズスクロール
-    setTimeout(() => {
-        view.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 100);
+    view.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 document.getElementById('searchInput').oninput = (e) => {
