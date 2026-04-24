@@ -3,50 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>記事一覧＆詳細表示</title>
+    <title>未来へのヒント - スマートレイアウト</title>
     <style>
         * { box-sizing: border-box; }
         body { 
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
             background-color: #f0f2f5;
             margin: 0; padding: 0; color: #333;
+            /* PCで見た時に背景に余白を作る */
+            display: flex;
+            justify-content: center;
         }
 
         .container {
-            width: 100%; max-width: 900px;
-            margin: 0 auto; background-color: #fff;
-            padding: 20px; min-height: 100vh;
+            /* 横幅を少し狭く設定（PCで見ても読みやすい幅） */
+            width: 100%;
+            max-width: 600px; 
+            background-color: #fff;
+            padding: 20px;
+            min-height: 100vh;
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
 
-        /* 検索エリア */
+        /* 検索ボックスの固定 */
         .search-box {
             position: sticky; top: 0; background: #fff;
-            padding: 10px 0; z-index: 100; border-bottom: 1px solid #eee;
+            padding: 10px 0; z-index: 100;
         }
         #searchInput {
             width: 100%; padding: 12px 20px; font-size: 16px;
             border: 2px solid #007bff; border-radius: 25px; outline: none;
         }
 
-        /* ページネーション */
         .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 15px 0; }
         .pagination button {
-            padding: 6px 12px; border: 1px solid #007bff; background: #fff;
-            color: #007bff; border-radius: 4px; cursor: pointer;
+            padding: 6px 10px; border: 1px solid #007bff; background: #fff;
+            color: #007bff; border-radius: 4px; cursor: pointer; font-size: 14px;
         }
-        .pagination button.active { background: #007bff; color: #fff; font-weight: bold; }
+        .pagination button.active { background: #007bff; color: #fff; }
 
-        /* リスト表示（スクロールエリア） */
+        /* リスト表示エリア（高さを少し抑えてコンパクトに） */
         .list-container {
             border: 1px solid #ddd; border-radius: 8px;
-            max-height: 400px; overflow-y: auto; margin-bottom: 20px;
-            background: #fafafa;
+            max-height: 350px; overflow-y: auto; 
+            margin-bottom: 20px; background: #fafafa;
         }
         .titles { margin: 0; padding: 0; list-style: none; }
         .titles li { 
             padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #eee;
-            font-size: 17px; color: #0000ee; text-decoration: underline;
+            font-size: 16px; color: #0000ee; text-decoration: underline;
+            line-height: 1.4;
         }
         .titles li:hover { background-color: #f0f7ff; }
         .titles li.active-item { 
@@ -54,21 +60,21 @@
             text-decoration: none; font-weight: bold;
         }
 
-        /* 詳細表示カード（常に一覧の下に位置） */
+        /* 詳細カード */
         .detail-card {
-            margin-top: 30px; border: 2px solid #007bff; border-radius: 12px;
-            overflow: hidden; display: none; /* 最初は隠す */
+            border: 2px solid #007bff; border-radius: 12px;
+            overflow: hidden; display: none;
             background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
         }
         .detail-header {
-            background-color: #f0f7ff; padding: 15px; font-size: 18px;
+            background-color: #f0f7ff; padding: 15px; font-size: 17px;
             font-weight: bold; border-bottom: 1px solid #007bff; color: #007bff;
         }
-        .detail-body { padding: 20px; font-size: 18px; line-height: 1.8; }
+        .detail-body { padding: 20px; font-size: 17px; line-height: 1.7; }
 
         @media (max-width: 600px) {
-            .container { padding: 10px; }
-            .list-container { max-height: 300px; }
+            .container { padding: 15px; }
             .detail-body { font-size: 16px; }
         }
     </style>
@@ -76,13 +82,13 @@
 <body>
 
 <div class="container">
-    <div style="text-align:center;">
+    <div style="text-align:center; margin-bottom: 10px;">
         <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" style="max-width:100%; border-radius:8px;">
-        <h2 style="color:#333;">終活のヒント 一覧</h2>
+        <h2 style="font-size: 20px; margin: 10px 0;">終活のヒント</h2>
     </div>
 
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="気になる言葉で検索...">
+        <input type="text" id="searchInput" placeholder="検索...">
     </div>
 
     <div id="pagination" class="pagination"></div>
@@ -98,13 +104,12 @@
 </div>
 
 <script>
-// 記事データ（配列の閉じ忘れを修正済み）
 const articles = [
-    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。<br><br>要介護認定の申請を市町村役場で行いましょう。" },
-    { title: "2、任意後見契約とはなんですか？", content: "認知症などで判断能力が低下した際に備え、あらかじめ代理人を決めておく契約です。公正証書での作成が推奨されます。" },
-    { title: "3、献体とはどういう事をするのですか？", content: "医学の発展のために、死後に遺体を提供することです。大学等への事前登録と家族の同意が必要です。" },
-    // （お手元の4〜84番をここに挿入してください）
-    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "要介護認定の際、医師の意見書が必要です。普段の健康状態を把握している「かかりつけ医」の意見は判定に大きく影響します。" }
+    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。<br><br>まずは市町村役場へ行き、要介護認定の申請を行いましょう。" },
+    { title: "2、任意後見契約とはなんですか？", content: "将来、判断能力が低下した時に備え、自分の代わりに財産管理などをしてもらう人をあらかじめ決めておく契約です。公正証書で作成します。" },
+    { title: "3、献体とはどういう事をするのですか？", content: "医学の発展のために、死後に自分の遺体を提供することです。生前登録と家族の同意が必要です。" },
+    // データの続きをここに追加
+    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "要介護認定の際、医師の意見書が必要です。普段の様子をよく知る医師がいることで、より正確な判定を受けられます。" }
 ];
 
 let filtered = [...articles];
@@ -121,11 +126,8 @@ function render() {
         const li = document.createElement('li');
         li.textContent = item.title;
         li.onclick = function() {
-            // 他の選択を解除
             document.querySelectorAll('.titles li').forEach(el => el.classList.remove('active-item'));
-            // 選択中を強調
             this.classList.add('active-item');
-            // 詳細を表示
             showDetail(item);
         };
         list.appendChild(li);
@@ -152,7 +154,7 @@ function showDetail(item) {
     document.getElementById('targetContent').innerHTML = item.content;
     view.style.display = 'block';
     
-    // カードが見える位置までスクロール
+    // PCでもスクロールが自然になるように調整
     view.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
@@ -160,6 +162,7 @@ document.getElementById('searchInput').oninput = (e) => {
     const val = e.target.value.toLowerCase();
     filtered = articles.filter(a => a.title.includes(val) || a.content.includes(val));
     page = 1;
+    document.getElementById('detailView').style.display = 'none';
     render();
 };
 
