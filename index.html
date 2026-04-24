@@ -3,182 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>未来へのヒント - 一覧表示型</title>
+    <title>記事一覧＆詳細表示</title>
     <style>
         * { box-sizing: border-box; }
         body { 
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            background-color: #f4f7f9;
+            background-color: #f0f2f5;
             margin: 0; padding: 0; color: #333;
         }
 
         .container {
-            width: 100%; max-width: 1000px;
-            margin: 0 auto; background-color: #ffffff;
+            width: 100%; max-width: 900px;
+            margin: 0 auto; background-color: #fff;
             padding: 20px; min-height: 100vh;
-            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
 
-        /* 検索窓 */
-        .search-container { text-align: center; margin-bottom: 20px; }
+        /* 検索エリア */
+        .search-box {
+            position: sticky; top: 0; background: #fff;
+            padding: 10px 0; z-index: 100; border-bottom: 1px solid #eee;
+        }
         #searchInput {
-            width: 100%; max-width: 600px; padding: 12px 20px;
-            font-size: 18px; border: 2px solid #007bff;
-            border-radius: 25px; outline: none;
+            width: 100%; padding: 12px 20px; font-size: 16px;
+            border: 2px solid #007bff; border-radius: 25px; outline: none;
         }
 
         /* ページネーション */
-        .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 20px; }
+        .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 15px 0; }
         .pagination button {
-            padding: 8px 12px; cursor: pointer; border: 1px solid #007bff;
-            background-color: #e9f5ff; color: #007bff; border-radius: 4px; min-width: 44px;
+            padding: 6px 12px; border: 1px solid #007bff; background: #fff;
+            color: #007bff; border-radius: 4px; cursor: pointer;
         }
-        .pagination button.active { background-color: #007bff; color: white; font-weight: bold; }
+        .pagination button.active { background: #007bff; color: #fff; font-weight: bold; }
 
-        /* タイトル一覧 */
-        .titles { margin: 0 0 30px 0; padding: 0; list-style: none; }
+        /* リスト表示（スクロールエリア） */
+        .list-container {
+            border: 1px solid #ddd; border-radius: 8px;
+            max-height: 400px; overflow-y: auto; margin-bottom: 20px;
+            background: #fafafa;
+        }
+        .titles { margin: 0; padding: 0; list-style: none; }
         .titles li { 
-            padding: 15px 10px; cursor: pointer; color: #0000ee; 
-            text-decoration: underline; font-size: 19px; line-height: 1.4;
-            border-bottom: 1px solid #eee; transition: 0.2s;
+            padding: 12px 15px; cursor: pointer; border-bottom: 1px solid #eee;
+            font-size: 17px; color: #0000ee; text-decoration: underline;
         }
-        /* 選択中のタイトルを目立たせる */
-        .titles li.selected { background-color: #e9f5ff; font-weight: bold; color: #0056b3; text-decoration: none; border-left: 5px solid #007bff; }
-
-        /* 記事詳細カード（一覧の下に表示） */
-        .article-card {
-            border: 3px solid #007bff; border-radius: 12px;
-            background-color: #fff; margin-top: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            animation: slideIn 0.3s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .titles li:hover { background-color: #f0f7ff; }
+        .titles li.active-item { 
+            background-color: #007bff; color: #fff; 
+            text-decoration: none; font-weight: bold;
         }
 
-        .card-header {
-            background-color: #f0f7ff; padding: 15px;
-            font-size: 20px; font-weight: bold;
-            border-bottom: 2px solid #007bff; color: #007bff;
+        /* 詳細表示カード（常に一覧の下に位置） */
+        .detail-card {
+            margin-top: 30px; border: 2px solid #007bff; border-radius: 12px;
+            overflow: hidden; display: none; /* 最初は隠す */
+            background: #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .card-body { padding: 20px; font-size: 19px; line-height: 1.8; }
-        .card-body p { margin: 0; white-space: pre-wrap; }
+        .detail-header {
+            background-color: #f0f7ff; padding: 15px; font-size: 18px;
+            font-weight: bold; border-bottom: 1px solid #007bff; color: #007bff;
+        }
+        .detail-body { padding: 20px; font-size: 18px; line-height: 1.8; }
 
         @media (max-width: 600px) {
-            .container { padding: 15px 10px; }
-            .card-header { font-size: 18px; }
-            .card-body { font-size: 17px; }
+            .container { padding: 10px; }
+            .list-container { max-height: 300px; }
+            .detail-body { font-size: 16px; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" style="max-width:100%; height:auto; display:block; margin:0 auto 15px; border-radius:8px;">
-    
-    <h2 style="text-align:center; font-size: 24px; color:#007bff;">これからを整える未来へのヒント</h2>
+    <div style="text-align:center;">
+        <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" style="max-width:100%; border-radius:8px;">
+        <h2 style="color:#333;">終活のヒント 一覧</h2>
+    </div>
 
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="キーワードで検索...">
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="気になる言葉で検索...">
     </div>
 
     <div id="pagination" class="pagination"></div>
-    <p style="text-align:center; font-size:14px; color:#666;" id="resultCount"></p>
 
-    <ul class="titles" id="titleList"></ul>
+    <div class="list-container">
+        <ul class="titles" id="titleList"></ul>
+    </div>
 
-    <div id="articleArea" style="display: none;">
-        <div class="article-card">
-            <div class="card-header" id="currentTitle"></div>
-            <div class="card-body">
-                <p id="currentText"></p>
-            </div>
-        </div>
+    <div id="detailView" class="detail-card">
+        <div class="detail-header" id="targetTitle"></div>
+        <div class="detail-body" id="targetContent"></div>
     </div>
 </div>
 
 <script>
-// 記事データ（一部抜粋：お手元の全データをここに貼り付けてください）
+// 記事データ（配列の閉じ忘れを修正済み）
 const articles = [
-    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。<br><br>要介護認定の申請を市町村役場で行います。" },
-    { title: "2、任意後見契約とはなんですか？", content: "任意後見契約とはなんですか？今は大丈夫だが、認知症などで判断する能力が低くなったら、自分の代わりに財産管理をしてもらう契約です。公正証書を作成します。" },
-    { title: "3、献体とはどういう事をするのですか？", content: "献体とはどういう事をするのですか？献体を申し込むと、医学のために、死後に遺体を提供することです。" },
-    // 85番まで続く...
-    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "要介護認定の際、医師の意見書が必要です。普段の様子をよく知る「かかりつけ医」がいることで、より正確な判定を受けることができます。" }
+    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。<br><br>要介護認定の申請を市町村役場で行いましょう。" },
+    { title: "2、任意後見契約とはなんですか？", content: "認知症などで判断能力が低下した際に備え、あらかじめ代理人を決めておく契約です。公正証書での作成が推奨されます。" },
+    { title: "3、献体とはどういう事をするのですか？", content: "医学の発展のために、死後に遺体を提供することです。大学等への事前登録と家族の同意が必要です。" },
+    // （お手元の4〜84番をここに挿入してください）
+    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "要介護認定の際、医師の意見書が必要です。普段の健康状態を把握している「かかりつけ医」の意見は判定に大きく影響します。" }
 ];
 
-let filteredArticles = [...articles];
-const itemsPerPage = 10;
-let currentPage = 1;
+let filtered = [...articles];
+const perPage = 10;
+let page = 1;
 
-function renderList() {
+function render() {
     const list = document.getElementById('titleList');
     list.innerHTML = '';
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const currentItems = filteredArticles.slice(start, end);
+    const start = (page - 1) * perPage;
+    const current = filtered.slice(start, start + perPage);
 
-    currentItems.forEach(art => {
+    current.forEach(item => {
         const li = document.createElement('li');
-        li.textContent = art.title;
+        li.textContent = item.title;
         li.onclick = function() {
-            // 他の選択状態を解除
-            document.querySelectorAll('.titles li').forEach(el => el.classList.remove('selected'));
-            // 選択した項目をハイライト
-            this.classList.add('selected');
-            // カードを表示
-            showArticle(art);
+            // 他の選択を解除
+            document.querySelectorAll('.titles li').forEach(el => el.classList.remove('active-item'));
+            // 選択中を強調
+            this.classList.add('active-item');
+            // 詳細を表示
+            showDetail(item);
         };
         list.appendChild(li);
     });
-
-    renderPagination();
-    document.getElementById('resultCount').textContent = `全 ${filteredArticles.length} 件`;
+    renderPager();
 }
 
-function showArticle(art) {
-    const area = document.getElementById('articleArea');
-    document.getElementById('currentTitle').textContent = art.title;
-    document.getElementById('currentText').innerHTML = art.content;
-    
-    area.style.display = 'block';
-    
-    // スムーズにカードまでスクロール（スマホで見やすくするため）
-    area.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function renderPagination() {
-    const nav = document.getElementById('pagination');
-    nav.innerHTML = '';
-    const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
-
-    for (let i = 1; i <= totalPages; i++) {
-        const btn = document.createElement('button');
-        btn.textContent = i;
-        if (i === currentPage) btn.className = 'active';
-        btn.onclick = () => {
-            currentPage = i;
-            // ページ移動時はカードを一旦隠す（混乱を防ぐため）
-            document.getElementById('articleArea').style.display = 'none';
-            renderList();
-            window.scrollTo({top: document.getElementById('searchInput').offsetTop - 20, behavior: 'smooth'});
-        };
-        nav.appendChild(btn);
+function renderPager() {
+    const pager = document.getElementById('pagination');
+    pager.innerHTML = '';
+    const total = Math.ceil(filtered.length / perPage);
+    for (let i = 1; i <= total; i++) {
+        const b = document.createElement('button');
+        b.textContent = i;
+        if (i === page) b.className = 'active';
+        b.onclick = () => { page = i; render(); };
+        pager.appendChild(b);
     }
 }
 
+function showDetail(item) {
+    const view = document.getElementById('detailView');
+    document.getElementById('targetTitle').textContent = item.title;
+    document.getElementById('targetContent').innerHTML = item.content;
+    view.style.display = 'block';
+    
+    // カードが見える位置までスクロール
+    view.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
 document.getElementById('searchInput').oninput = (e) => {
-    const word = e.target.value.toLowerCase();
-    filteredArticles = articles.filter(a => a.title.includes(word) || a.content.includes(word));
-    currentPage = 1;
-    document.getElementById('articleArea').style.display = 'none';
-    renderList();
+    const val = e.target.value.toLowerCase();
+    filtered = articles.filter(a => a.title.includes(val) || a.content.includes(val));
+    page = 1;
+    render();
 };
 
-renderList();
+render();
 </script>
-
 </body>
 </html>
