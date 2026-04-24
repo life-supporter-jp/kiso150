@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>未来へのヒント - 800pxワイドレイアウト</title>
+    <title>未来へのヒント - 1000pxワイドレイアウト</title>
     <style>
         * { box-sizing: border-box; }
         body { 
@@ -15,47 +15,72 @@
         }
 
         .container {
-            /* 横幅を800pxに設定 */
+            /* 横幅を1000pxに設定 */
             width: 100%;
-            max-width: 800px; 
+            max-width: 1000px; 
             background-color: #fff;
-            padding: 30px; /* 余白を少し広げてゆとりを */
+            padding: 30px;
             min-height: 100vh;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* ヘッダー・画像エリア */
+        .header-area {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .intro-text {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            text-align: left;
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
         }
 
         /* 検索ボックス */
         .search-box {
             position: sticky; top: 0; background: #fff;
             padding: 15px 0; z-index: 100;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid #eee;
         }
         #searchInput {
-            width: 100%; padding: 14px 25px; font-size: 18px;
-            border: 2px solid #007bff; border-radius: 30px; outline: none;
+            width: 100%; padding: 15px 25px; font-size: 18px;
+            border: 2px solid #007bff; border-radius: 35px; outline: none;
+            box-shadow: 0 2px 5px rgba(0,123,255,0.1);
         }
 
         /* ページネーション */
         .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 20px 0; }
         .pagination button {
-            padding: 8px 14px; border: 1px solid #007bff; background: #fff;
-            color: #007bff; border-radius: 6px; cursor: pointer; font-size: 15px;
+            padding: 8px 16px; border: 1px solid #007bff; background: #fff;
+            color: #007bff; border-radius: 6px; cursor: pointer; font-size: 16px;
+            transition: 0.2s;
         }
         .pagination button.active { background: #007bff; color: #fff; font-weight: bold; }
+        .pagination button:hover:not(.active) { background: #e9f5ff; }
 
         /* タイトルリスト表示エリア */
         .list-container {
-            border: 1px solid #ddd; border-radius: 10px;
-            max-height: 400px; overflow-y: auto; 
+            border: 1px solid #ddd; border-radius: 12px;
+            max-height: 450px; overflow-y: auto; 
             margin-bottom: 30px; background: #fafafa;
         }
         .titles { margin: 0; padding: 0; list-style: none; }
         .titles li { 
-            padding: 15px 20px; cursor: pointer; border-bottom: 1px solid #eee;
-            font-size: 18px; color: #0000ee; text-decoration: underline;
-            line-height: 1.5; transition: background 0.2s;
+            padding: 18px 25px; cursor: pointer; border-bottom: 1px solid #eee;
+            font-size: 19px; color: #0000ee; text-decoration: underline;
+            line-height: 1.5; transition: 0.2s;
         }
-        .titles li:hover { background-color: #f0f7ff; }
+        .titles li:hover { background-color: #f0f7ff; color: #0056b3; }
         .titles li.active-item { 
             background-color: #007bff; color: #fff; 
             text-decoration: none; font-weight: bold;
@@ -63,40 +88,46 @@
 
         /* 詳細カード */
         .detail-card {
-            border: 2px solid #007bff; border-radius: 15px;
+            border: 3px solid #007bff; border-radius: 20px;
             overflow: hidden; display: none;
-            background: #fff; box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-            margin-bottom: 50px;
-            animation: fadeIn 0.4s ease;
+            background: #fff; box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            margin-bottom: 60px;
+            animation: slideUp 0.4s ease-out;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .detail-header {
-            background-color: #f0f7ff; padding: 20px; font-size: 20px;
-            font-weight: bold; border-bottom: 1px solid #007bff; color: #007bff;
+            background-color: #f0f7ff; padding: 25px; font-size: 22px;
+            font-weight: bold; border-bottom: 2px solid #007bff; color: #007bff;
         }
-        .detail-body { padding: 30px; font-size: 19px; line-height: 1.8; }
+        .detail-body { padding: 35px; font-size: 20px; line-height: 1.9; color: #444; }
 
         /* スマホ向け調整 */
         @media (max-width: 600px) {
             .container { padding: 15px; }
-            .detail-body { font-size: 17px; padding: 20px; }
-            .titles li { font-size: 16px; }
+            .detail-body { font-size: 18px; padding: 20px; }
+            .titles li { font-size: 17px; padding: 15px; }
+            #searchInput { font-size: 16px; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div style="text-align:center; margin-bottom: 15px;">
-        <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" style="max-width:100%; border-radius:8px;">
-        <h2 style="font-size: 24px; color: #333; margin: 15px 0;">これからの安心を支える「未来へのヒント」</h2>
+    <div class="header-area">
+        <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" class="header-image" alt="メインビジュアル">
+        <h2 style="font-size: 28px; color: #007bff; margin: 20px 0 10px;">未来へのヒント一覧</h2>
+        
+        <div class="intro-text">
+            このページでは、終活や介護、相続に関する「知っておきたいヒント」を一覧でご紹介しています。<br>
+            気になるタイトルをクリックすると、その下に詳細内容が表示されます。キーワード検索も活用してください。
+        </div>
     </div>
 
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="キーワードで検索...">
+        <input type="text" id="searchInput" placeholder="例：介護、保険、相続など...">
     </div>
 
     <div id="pagination" class="pagination"></div>
@@ -112,12 +143,13 @@
 </div>
 
 <script>
+// 記事データ
 const articles = [
-    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。<br><br>まずは市町村役場へ行き、要介護認定の申請を行いましょう。窓口で相談すれば丁寧に案内してもらえます。" },
-    { title: "2、任意後見契約とはなんですか？", content: "将来、認知症などで判断能力が低下した時に備え、自分の代わりに財産管理などをしてもらう人をあらかじめ公的に決めておく契約です。公正証書で作成し、法的に守られた権利を行使できます。" },
-    { title: "3、献体とはどういう事をするのですか？", content: "医学の教育・研究の発展のために、死後に自分の遺体を無償で提供することです。生前に大学や登録機関へ登録し、ご家族の承諾を得ておく必要があります。" },
-    // 追加データ（4番以降）
-    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "要介護認定の際、主治医の意見書が必要となります。普段の体調や生活状況をよく理解している「かかりつけ医」がいることで、より適切な判定が受けやすくなります。" }
+    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。<br><br>まずは市町村役場へ行き、要介護認定の申請を行いましょう。窓口で相談すれば、手続きの流れを丁寧に案内してもらえます。" },
+    { title: "2、任意後見契約とはなんですか？", content: "将来、認知症などで自分の判断能力が低下した時に備え、あらかじめ自分の代わりに財産管理や契約手続きをしてもらう人を決めておく契約です。公正証書で作成することで、将来の安心を法的に担保できます。" },
+    { title: "3、献体とはどういう事をするのですか？", content: "医学の教育や研究の発展のために、ご自身の死後に遺体を無償で提供することです。生前に大学や関連団体へ登録し、ご家族の承諾を得ておくことが必須となります。" },
+    // 85番まで続く...
+    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "要介護認定を受ける際、市区町村は主治医に「意見書」を求めます。日頃の健康状態や生活上の不自由さをよく知る「かかりつけ医」がいることで、実態に即した正確な判定を受けやすくなります。" }
 ];
 
 let filtered = [...articles];
@@ -151,10 +183,18 @@ function renderPager() {
         const b = document.createElement('button');
         b.textContent = i;
         if (i === page) b.className = 'active';
-        b.onclick = () => { page = i; render(); };
+        b.onclick = () => { 
+            page = i; 
+            render(); 
+            // ページ切り替え時は少しスクロールを戻す
+            document.querySelector('.search-box').scrollIntoView({ behavior: 'smooth' });
+        };
+        navLink(b);
         pager.appendChild(b);
     }
 }
+
+function navLink(btn) {} // プレースホルダ
 
 function showDetail(item) {
     const view = document.getElementById('detailView');
@@ -162,8 +202,10 @@ function showDetail(item) {
     document.getElementById('targetContent').innerHTML = item.content;
     view.style.display = 'block';
     
-    // カードが見やすいようにスクロール
-    view.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // カードが画面中央付近に来るようにスムーズスクロール
+    setTimeout(() => {
+        view.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 100);
 }
 
 document.getElementById('searchInput').oninput = (e) => {
