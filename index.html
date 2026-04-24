@@ -3,207 +3,310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>未来へのヒント - 終活サポート</title>
+    <title>未来へのヒント - ワイド＆コンパクト完全版</title>
     <style>
         * { box-sizing: border-box; }
+
         body { 
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            background-color: #f4f7f9; margin: 0; padding: 0; color: #333;
-            display: flex; justify-content: center;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            color: #333;
         }
 
-        /* PC最大幅 1000px */
+        /* コンテナ：PCでは1000pxで中央寄せ、スマホでは自動調整 */
         .container {
-            width: 100%; max-width: 1000px; 
-            background-color: #fff; padding: 40px 30px;
-            min-height: 100vh; box-shadow: 0 0 30px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 1000px; 
+            margin: 0 auto;
         }
 
-        /* 【1】メッセージエリア */
-        .message-section {
-            text-align: center; margin-bottom: 30px; padding: 25px;
-            border-left: 5px solid #007bff; background: #f0f7ff;
-            border-radius: 0 15px 15px 0;
+        /* ヘッダー画像 */
+        .header-img {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
         }
-        .copy-main { font-size: 26px; font-weight: bold; color: #007bff; margin-bottom: 15px; }
-        .copy-sub { font-size: 18px; font-weight: bold; color: #555; margin-bottom: 8px; line-height: 1.4; }
 
-        /* 【2】メイン画像・タイトル */
-        .header-area { text-align: center; margin-bottom: 30px; }
-        .header-image {
-            max-width: 100%; height: auto; border-radius: 15px;
-            margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        /* キャッチコピーエリア */
+        .copy-section {
+            text-align: center;
+            margin-bottom: 30px;
         }
-        .main-title { color: #007bff; font-size: 32px; margin: 10px 0; }
+        .copy-blue {
+            font-size: 24px;
+            color: #0000ff;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .main-title {
+            font-size: 28px;
+            line-height: 1.4;
+            margin: 20px 0;
+            border-bottom: 2px solid #007bff;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+        .sub-messages {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 20px;
+        }
 
-        /* 【3】検索エリア */
-        .search-box {
-            position: sticky; top: 0; background: #fff;
-            padding: 20px 0; z-index: 100; border-bottom: 2px solid #eee;
+        /* 検索窓 */
+        .search-container {
+            text-align: center;
+            margin-bottom: 15px;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            padding: 10px 0;
+            z-index: 100;
         }
         #searchInput {
-            width: 100%; padding: 18px 25px; font-size: 18px;
-            border: 2px solid #007bff; border-radius: 40px; outline: none;
+            width: 100%;
+            max-width: 600px;
+            padding: 12px 25px;
+            font-size: 18px;
+            border: 2px solid #007bff;
+            border-radius: 30px;
+            outline: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        /* 【4】ページネーション */
-        .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 25px 0; }
+        /* ページネーション */
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
         .pagination button {
-            padding: 10px 18px; border: 1px solid #007bff; background: #fff;
-            color: #007bff; border-radius: 8px; cursor: pointer; font-size: 16px;
+            padding: 8px 14px;
+            cursor: pointer;
+            border: 1px solid #007bff;
+            background-color: #e9f5ff;
+            color: #007bff;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.2s;
         }
-        .pagination button.active { background: #007bff; color: #fff; font-weight: bold; }
+        .pagination button.active {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
 
-        /* 【5】一覧表示エリア */
-        .list-container {
-            border: 1px solid #ddd; border-radius: 15px;
-            max-height: 450px; overflow-y: auto; 
-            margin-bottom: 30px; background: #fafafa;
+        .info-text { 
+            text-align: center; 
+            font-size: 16px; 
+            color: #666; 
+            margin-bottom: 10px; 
         }
-        .titles { margin: 0; padding: 0; list-style: none; }
+
+        /* タイトル一覧 */
+        .titles-header { 
+            font-size: 22px; 
+            border-bottom: 2px solid #007bff; 
+            padding-bottom: 8px;
+            margin-top: 10px;
+        }
+        .titles { margin-bottom: 30px; padding-left: 0; }
         .titles li { 
-            padding: 20px 30px; cursor: pointer; border-bottom: 1px solid #eee;
-            font-size: 20px; color: #0000ee; text-decoration: underline; line-height: 1.5;
+            margin: 15px 0; 
+            cursor: pointer; 
+            color: #0000ee; 
+            text-decoration: underline; 
+            list-style-type: none;
+            font-size: 20px; 
+            line-height: 1.5;
         }
-        .titles li:hover { background-color: #f0f7ff; }
-        .titles li.active-item { background-color: #007bff; color: #fff; text-decoration: none; font-weight: bold; }
+        .titles li:hover { color: #ff6f61; }
 
-        /* 【6】詳細表示（タイトルの下に出るカード） */
-        .detail-card {
-            border: 3px solid #007bff; border-radius: 20px; overflow: hidden;
-            display: none; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            margin-bottom: 50px; animation: fadeIn 0.4s ease;
+        /* 記事本文エリア（詳細表示） */
+        .article { 
+            margin: 30px 0; 
+            border: 2px solid #007bff;
+            padding: 30px; 
+            background-color: #fcfcfc;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+            animation: fadeIn 0.5s ease;
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .detail-header { background-color: #f0f7ff; padding: 25px; font-size: 24px; font-weight: bold; color: #007bff; border-bottom: 2px solid #007bff; }
-        .detail-body { padding: 40px; font-size: 21px; line-height: 1.9; color: #333; }
-
-        /* 【7】フッター案内・CTA */
-        .footer-info {
-            background: #f8f9fa; border-radius: 20px; padding: 40px;
-            margin-top: 60px; line-height: 1.8; font-size: 18px; color: #444;
-        }
-        .cta-button {
-            display: block; width: 100%; max-width: 400px; margin: 30px auto 0;
-            padding: 20px; background: #ff6f61; color: #fff !important; text-align: center;
-            text-decoration: none; font-size: 22px; font-weight: bold;
-            border-radius: 50px; box-shadow: 0 6px 20px rgba(255,111,97,0.4);
-            transition: 0.3s;
+        .article h3 { font-size: 22px; color: #007bff; margin-top: 0; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .article p {
+            white-space: pre-wrap;
+            line-height: 1.9;
+            font-size: 20px;
+            color: #333;
         }
 
+        /* フッター・案内エリア */
+        .footer-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            text-align: center;
+        }
+        .footer-text {
+            font-size: 18px;
+            font-weight: bold;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: left;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .footer-img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+        }
+        .cta-link {
+            font-size: 22px;
+            color: #0000ff;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        /* スマホ向けの微調整 */
         @media (max-width: 600px) {
-            .container { padding: 20px 15px; }
-            .copy-main { font-size: 20px; }
-            .detail-body { font-size: 18px; }
+            body { padding: 10px; }
+            .copy-blue, .main-title { font-size: 20px; }
+            .article p { font-size: 18px; }
+            .pagination button { flex: 1 1 20%; padding: 10px 5px; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="message-section">
-        <div class="copy-main">「知らない」はリスク、「知る」はギフト。</div>
-        <div class="copy-sub">これからを整える未来へのヒント</div>
-        <div class="copy-sub">【考えるのは、今。安心するのは、これから。】</div>
-        <div class="copy-sub">【迷わせない準備が、いちばんの優しさ。】</div>
-        <div class="copy-sub">【これからを整える、最高の「ありがとう」のために。】</div>
+    <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" class="header-img">
+
+    <div class="copy-section">
+        <span class="copy-blue">「知らない」はリスク　「知る」はギフト。</span>
+        <h2 class="main-title">これからを整える<br>未来へのヒント</h2>
+        <div class="sub-messages">
+            【考えるのは、今。安心するのは、これから。】<br>
+            【迷わせない準備が、いちばんの優しさ。】<br>
+            【これからを整える、最高の「ありがとう」のために。】
+        </div>
     </div>
 
-    <div class="header-area">
-        <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" class="header-image">
-        <h1 class="main-title">未来へのヒント</h1>
-    </div>
-
-    <div class="search-box">
-        <input type="text" id="searchInput" placeholder="気になるキーワードを入力...">
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="キーワードで検索...">
     </div>
 
     <div id="pagination" class="pagination"></div>
+    <p class="info-text" id="resultCount"></p>
 
-    <div class="list-container">
-        <ul class="titles" id="titleList"></ul>
-    </div>
+    <h2 class="titles-header">タイトル一覧</h2>
+    <ul class="titles" id="titleList"></ul>
 
-    <div id="detailView" class="detail-card">
-        <div class="detail-header" id="targetTitle"></div>
-        <div class="detail-body" id="targetContent"></div>
-    </div>
+    <div id="articleDisplay"></div>
 
-    <div class="footer-info">
-        <p>今回のアプリは如何だったでしょうか？他にも使えるアプリ、脳トレができるゲームや趣味に俳句、和歌などが利用できるサイトをご案内します。</p>
-        <p>また大事な記録をサーバーに残せるサイトで、何かあった時に情報開示も指定できるサイトです。スマホのID、PWを記録しておくと安心です。</p>
-        <p style="font-weight: bold; text-align: center; margin-top: 30px;">以下より体験版をご確認ください。</p>
-        <a href="https://life-supporter.jp/lp/HRSuykFf" class="cta-button" target="_blank">体験版を確認する</a>
+    <div class="footer-section">
+        <div class="footer-text">
+            今回のアプリは如何だったでしょうか？他にも使えるアプリ、脳トレができるゲームや趣味に俳句、和歌などが利用できるサイトをご案内します。また大事な記録をサーバーに残せるサイトで、何かあった時に情報開示も指定できるサイトです。スマホのID、PWを記録しておくと安心です。
+        </div>
+
+        <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012085.jpg" class="footer-img">
+        
+        <div style="margin: 30px 0;">
+            <b style="font-size: 24px;">以下より体験版をご確認ください。</b><br>
+            <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012100.jpg" style="width: 200px; margin: 15px 0;">
+            <div style="margin-top: 10px;">
+                <a href="https://life-supporter.jp/lp/HRSuykFf" class="cta-link">https://life-supporter.jp/lp/HRSuykFf</a>
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
-// 1〜85番のデータをこの順番（昇順）で入れてください
+// ==== 記事データ（全152記事対応） ====
 const articles = [
-    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "まずは市町村役場へ行き、要介護認定の申請を行いましょう。" },
-    { title: "2、任意後見契約とはなんですか？", content: "将来に備えて代理人を決める、公正証書による契約です。" },
-    { title: "3、献体とはどういう事をするのですか？", content: "医学の発展のために遺体を提供することです。生前登録が必要です。" },
-    // ...中略...
-    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "正確な判定のために医師の意見書が必要になるからです。" }
+    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば受けられます。\n\nまずは市町村役場へ行き、「要介護認定」の申請をしましょう。聞き取り調査や主治医の資料をベースに、7段階の判定が行われます。認定完了までには約30日ほどかかります。" },
+    { title: "2、任意後見契約とはなんですか？", content: "将来、認知症などで判断能力が低下した時に備え、自分の代わりに財産管理をしてもらう信頼できる人を決めておく契約です。公正証書を作成して法的に効力を持たせます。" },
+    { title: "3、献体とはどういう事をするのですか？", content: "医学の発展のために、死後にご自身の遺体を提供することです。大学や献体協会への生前登録と、家族の同意が必要です。" },
+    // 途中略 ...
+    { title: "152、墓終い（墓じまい）とはなんですか？", content: "お墓を撤去・処分し、更地にして墓地の管理者に返すことです。後継者がいない、遠方で管理が難しいなどの理由で行われます。\n\n【手順】\n1. 親族や寺院へ相談\n2. 新しい納骨先を確保\n3. 市町村へ改葬許可を申請\n4. 遺骨の取り出し、墓石の撤去\n5. 新しい場所へ納骨" }
 ];
 
-let filtered = [...articles];
-const perPage = 10;
-let page = 1;
+let filteredArticles = articles;
+const itemsPerPage = 20;
+let currentPage = 1;
 
+const searchInput = document.getElementById('searchInput');
+const titleList = document.getElementById('titleList');
+const pagination = document.getElementById('pagination');
+const articleDisplay = document.getElementById('articleDisplay');
+const resultCountText = document.getElementById('resultCount');
+
+// 検索処理
+searchInput.addEventListener('input', () => {
+    const query = searchInput.value.toLowerCase();
+    filteredArticles = articles.filter(article => 
+        article.title.toLowerCase().includes(query) || 
+        article.content.toLowerCase().includes(query)
+    );
+    currentPage = 1;
+    render();
+});
+
+// 描画処理
 function render() {
-    const list = document.getElementById('titleList');
-    list.innerHTML = '';
-    const start = (page - 1) * perPage;
-    const current = filtered.slice(start, start + perPage);
+    resultCountText.textContent = `該当: ${filteredArticles.length}件`;
 
-    current.forEach(item => {
+    titleList.innerHTML = '';
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const pageItems = filteredArticles.slice(start, end);
+
+    pageItems.forEach(article => {
         const li = document.createElement('li');
-        li.textContent = item.title;
-        li.onclick = function() {
-            document.querySelectorAll('.titles li').forEach(el => el.classList.remove('active-item'));
-            this.classList.add('active-item');
-            showDetail(item);
-        };
-        list.appendChild(li);
+        li.textContent = article.title;
+        li.onclick = () => showArticle(article);
+        titleList.appendChild(li);
     });
-    renderPager();
-}
 
-function renderPager() {
-    const pager = document.getElementById('pagination');
-    pager.innerHTML = '';
-    const total = Math.ceil(filtered.length / perPage);
-    for (let i = 1; i <= total; i++) {
-        const b = document.createElement('button');
-        b.textContent = i;
-        if (i === page) b.className = 'active';
-        b.onclick = () => { page = i; render(); };
-        pager.appendChild(b);
+    pagination.innerHTML = '';
+    const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = `${i}番`;
+        if (i === currentPage) btn.classList.add('active');
+        btn.onclick = () => {
+            currentPage = i;
+            render();
+            window.scrollTo({ top: searchInput.offsetTop - 20, behavior: 'smooth' });
+        };
+        pagination.appendChild(btn);
     }
 }
 
-function showDetail(item) {
-    const view = document.getElementById('detailView');
-    document.getElementById('targetTitle').textContent = item.title;
-    document.getElementById('targetContent').innerHTML = item.content;
-    view.style.display = 'block';
-    
-    // カードが表示されたらそこまでスムーズにスクロール
-    setTimeout(() => {
-        view.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 50);
+// 記事表示
+function showArticle(article) {
+    articleDisplay.innerHTML = `
+        <div class="article">
+            <h3>${article.title}</h3>
+            <p>${article.content.replace(/\n/g, '<br>')}</p>
+        </div>
+    `;
+    // 記事へスムーズに移動
+    articleDisplay.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
-
-document.getElementById('searchInput').oninput = (e) => {
-    const val = e.target.value.toLowerCase();
-    filtered = articles.filter(a => a.title.includes(val) || a.content.includes(val));
-    page = 1;
-    document.getElementById('detailView').style.display = 'none';
-    render();
-};
 
 render();
 </script>
+
 </body>
 </html>
