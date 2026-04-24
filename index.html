@@ -16,12 +16,19 @@
             color: #333;
         }
 
-        .container {
+        /* PCでの横幅を1000pxに固定し、中央に寄せる */
+        .outer-container {
             width: 100%;
-            max-width: 1000px; 
+            max-width: 1000px;
             margin: 0 auto;
         }
 
+        .container {
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* 検索窓 */
         .search-container {
             text-align: center;
             margin-bottom: 15px; 
@@ -36,6 +43,7 @@
             outline: none;
         }
 
+        /* ページネーション */
         .pagination {
             display: flex;
             flex-wrap: wrap; 
@@ -68,6 +76,7 @@
             margin-bottom: 10px; 
         }
 
+        /* タイトル一覧 */
         h2 { 
             font-size: 1.3em; 
             border-bottom: 2px solid #007bff; 
@@ -85,6 +94,7 @@
             line-height: 1.4;
         }
 
+        /* 記事本文エリア */
         .article { 
             margin: 20px 0; 
             border: 1px solid #eee;
@@ -99,6 +109,7 @@
             font-size: 20px; 
         }
 
+        /* スマホ向けの微調整 */
         @media (max-width: 600px) {
             body { padding: 15px; }
             .pagination button {
@@ -110,117 +121,119 @@
 </head>
 <body>
 
-<img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" style="display: block; margin: auto;">
-<p style="text-align:center; font-weight:bold; line-height:1.4; margin:10px 0;">
-    <span style="font-size: 21px; color: #0000ff;">「知らない」はリスク</span>
-    <span style="font-size: 21px; color: #0000ff;">「知る」はギフト。</span>
-</p>
-<h2 style="text-align:center; font-size: 24px; line-height: 1.4; margin: 20px 0;">
-    これからを整える<br>
-    <span style="font-size: 24px;">未来へのヒント</span>
-</h2>
-<div style="text-align:center;">
-【考えるのは、今。安心するのは、これから。】<br>
-【迷わせない準備が、いちばんの優しさ。】<br>
-【これからを整える、最高の「ありがとう」のために。】
-</div>
-<br>
+<div class="outer-container">
 
-<div class="container">
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="キーワードで検索...">
+    <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" style="display: block; margin: auto; max-width: 100%;">
+    <p style="text-align:center; font-weight:bold; line-height:1.4; margin:10px 0;">
+        <span style="font-size: 21px; color: #0000ff;">「知らない」はリスク</span>
+        <span style="font-size: 21px; color: #0000ff;">「知る」はギフト。</span>
+    </p>
+    <h2 style="text-align:center; font-size: 24px; line-height: 1.4; margin: 20px 0; border-bottom: none;">
+        これからを整える<br>
+        <span style="font-size: 24px;">未来へのヒント</span>
+    </h2>
+    <div style="text-align: center;">
+    【考えるのは、今。安心するのは、これから。】<br>
+    【迷わせない準備が、いちばんの優しさ。】<br>
+    【これからを整える、最高の「ありがとう」のために。】
+    </div>
+    <br>
+
+    <div class="container">
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="キーワードで検索...">
+        </div>
+
+        <div id="pagination" class="pagination"></div>
+        <p class="info-text" id="resultCount"><br></p>
+
+        <h2>タイトル一覧</h2>
+        <ul class="titles" id="titleList"></ul>
+
+        <hr>
+
+        <div id="articleDisplay"></div>
     </div>
 
-    <div id="pagination" class="pagination"></div>
-    <p class="info-text" id="resultCount"><br></p>
+    <script>
+    // ==== 記事データ（全152記事対応用枠組み） ====
+    const articles = [
+        { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。<br><br>介護サービスを利用するには生活をするうえでどのくらいの支障がでているのかを判定する必要があります。<br><br>そのために「要介護認定」の申請をします。<br><br>初めに市町村役場に行きます。<br><br>面談により聞き取り調査や主治医の資料をベースに、要支援か要介護かが決められます。<br><br>要支援1、要支援2、要介護1、要介護2、要介護3、要介護4、要介護5の7段階に分かれています。<br><br>要支援、要介護の段階により、受けられるサービス金額が違います。<br><br>認定が完了する前には３０日程かかります。" },
+        { title: "2、任意後見契約とはなんですか？", content: "任意後見契約とはなんですか？今は大丈夫だが、認知症などで判断する能力が低くなったら、自分の代わりに財産管理をしてもらわなくてはいけません、信頼できる任意後見人を決めて契約しておきます。<br><br>そうしないとあなたの事を誰も見る事が出来なくなります。<br><br>重要な契約となりますので公正証書を作成します。<br><br>おひとりさまや単独所帯など、葬儀や納骨についても助けてほしい人は「死後事務委任契約」を結べます。" },
+        { title: "3、献体とはどういう事をするのですか？", content: "献体とはどういう事をするのですか？献体を申し込むと、医学のために、死後に遺体を提供することです。<br><br>献体を登録するには住んでいる都道府県の大学医学部または、（財）日本篤志献体協会に申し込めばいいのです。<br><br>最近は、献体登録される方が増えて、一部の大学では制限しているところもあります。" },
+        { title: "152、墓終い（墓じまい）とはなんですか？", content: "墓終い（墓じまい）とはなんですか？●お墓終い・墓じまいで問題になるのは寺院墓地。<br><br>離断料や寺院の指定業者での施工で高額な費用が掛かる場合などあります。<br><br>【墓終い】※後継者不在※都心に出てしまい※迷惑を掛けたくない※管理費用等が負担「メリット」管理費用などが無くなる「デメリット」墓じまい費用等がかかる、書類（埋火葬許可書など）寺院と離檀料などの交渉が必要な場合も離檀料：一般の相場＝数十万円※墓石などの撤去費用は別途※高額になる事もありますからご注意・墓終い手順について1墓じまいをすることを親戚や墓地管理者(菩提寺の住職など)に相談する。2新しいお墓の管理者に「受入証明書」を発行してもらう。3お墓のある市区町村役場から「改葬許可申請書」を取り寄せ、墓地管理者に署名捺印をもらう。4「改葬許可申請書」と「受入証明書」を提出して「改葬許可証」を交付してもらう。5遺骨を取り出す。(＊石材店など専門の業者にお願いします) 6遺骨を移動・安置する。7新しいお墓に「改葬許可証」を提出して納骨する。" }
+    ];
 
-    <h2>タイトル一覧</h2>
-    <ul class="titles" id="titleList"></ul>
+    let filteredArticles = articles;
+    const itemsPerPage = 20;
+    let currentPage = 1;
 
-    <hr>
+    const searchInput = document.getElementById('searchInput');
+    const titleList = document.getElementById('titleList');
+    const pagination = document.getElementById('pagination');
+    const articleDisplay = document.getElementById('articleDisplay');
+    const resultCountText = document.getElementById('resultCount');
 
-    <div id="articleDisplay"></div>
-</div>
-
-<script>
-// ==== 記事データ ====
-const articles = [
-    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。\n\n介護サービスを利用するには生活をするうえでどのくらいの支障がでているのかを判定する必要があります。\n\nそのために「要介護認定」の申請をします。\n\n初めに市町村役場に行きます。\n\n面談により聞き取り調査や主治医の資料をベースに、要支援か要介護かが決められます。\n\n要支援1、要支援2、要介護1、要介護2、要介護3、要介護4、要介護5の7段階に分かれています。\n\n要支援、要介護の段階により、受けられるサービス金額が違います。\n\n認定が完了する前には３０日程かかります。" },
-    { title: "2、任意後見契約とはなんですか？", content: "任意後見契約とはなんですか？今は大丈夫だが、認知症などで判断する能力が低くなったら、自分の代わりに財産管理をしてもらわなくてはいけません、信頼できる任意後見人を決めて契約しておきます。\n\nそうしないとあなたの事を誰も見る事が出来なくなります。\n\n重要な契約となりますので公正証書を作成します。\n\nおひとりさまや単独所帯など、葬儀や納骨についても助けてほしい人は「死後事務委任契約」を結べます。" },
-    { title: "3、献体とはどういう事をするのですか？", content: "献体とはどういう事をするのですか？献体を申し込むと、医学のために、死後に遺体を提供することです。\n\n献体を登録するには住んでいる都道府県の大学医学部または、（財）日本篤志献体協会に申し込めばいいのです。\n\n最近は、献体登録される方が増えて、一部の大学では制限しているところもあります。" },
-    { title: "152、墓終い（墓じまい）とはなんですか？", content: "墓終い（墓じまい）とはなんですか？●お墓終い・墓じまいで問題になるのは寺院墓地。\n\n離断料や寺院の指定業者での施工で高額な費用が掛かる場合などあります。\n\n【墓終い】※後継者不在※都心に出てしまい※迷惑を掛けたくない※管理費用等が負担「メリット」管理費用などが無くなる「デメリット」墓じまい費用等がかかる、書類（埋火葬許可書など）寺院と離檀料などの交渉が必要な場合も離檀料：一般の相場＝数十万円※墓石などの撤去費用は別途※高額になる事もありますからご注意・墓終い手順について1墓じまいをすることを親戚や墓地管理者(菩提寺の住職など)に相談する。2新しいお墓の管理者に「受入証明書」を発行してもらう。3お墓のある市区町村役場から「改葬許可申請書」を取り寄せ、墓地管理者に署名捺印をもらう。4「改葬許可申請書」と「受入証明書」を提出して「改葬許可証」を交付してもらう。5遺骨を取り出す。(＊石材店など専門の業者にお願いします) 6遺骨を移動・安置する。7新しいお墓に「改葬許可証」を提出して納骨する。" }
-];
-
-let filteredArticles = articles;
-const itemsPerPage = 20;
-let currentPage = 1;
-
-const searchInput = document.getElementById('searchInput');
-const titleList = document.getElementById('titleList');
-const pagination = document.getElementById('pagination');
-const articleDisplay = document.getElementById('articleDisplay');
-const resultCountText = document.getElementById('resultCount');
-
-searchInput.addEventListener('input', () => {
-    const query = searchInput.value.toLowerCase();
-    filteredArticles = articles.filter(article => 
-        article.title.toLowerCase().includes(query) || 
-        article.content.toLowerCase().includes(query)
-    );
-    currentPage = 1;
-    render();
-});
-
-function render() {
-    resultCountText.textContent = `該当: ${filteredArticles.length}件`;
-    titleList.innerHTML = '';
-    const start = (currentPage - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    const pageItems = filteredArticles.slice(start, end);
-
-    pageItems.forEach(article => {
-        const li = document.createElement('li');
-        li.textContent = article.title;
-        li.onclick = () => showArticle(article);
-        titleList.appendChild(li);
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        filteredArticles = articles.filter(article => 
+            article.title.toLowerCase().includes(query) || 
+            article.content.toLowerCase().includes(query)
+        );
+        currentPage = 1;
+        render();
     });
 
-    pagination.innerHTML = '';
-    const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
-    for (let i = 1; i <= totalPages; i++) {
-        const btn = document.createElement('button');
-        btn.textContent = `${i}番`;
-        if (i === currentPage) btn.classList.add('active');
-        btn.onclick = () => {
-            currentPage = i;
-            render();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-        pagination.appendChild(btn);
+    function render() {
+        resultCountText.textContent = `該当: ${filteredArticles.length}件`;
+        titleList.innerHTML = '';
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const pageItems = filteredArticles.slice(start, end);
+
+        pageItems.forEach(article => {
+            const li = document.createElement('li');
+            li.textContent = article.title;
+            li.onclick = () => showArticle(article);
+            titleList.appendChild(li);
+        });
+
+        pagination.innerHTML = '';
+        const totalPages = Math.ceil(filteredArticles.length / itemsPerPage);
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = `${i}番`;
+            if (i === currentPage) btn.classList.add('active');
+            btn.onclick = () => {
+                currentPage = i;
+                render();
+                window.scrollTo({ top: searchInput.offsetTop, behavior: 'smooth' });
+            };
+            pagination.appendChild(btn);
+        }
     }
-}
 
-function showArticle(article) {
-    articleDisplay.innerHTML = `
-        <div class="article">
-            <h3>${article.title}</h3>
-            <p>${article.content}</p>
-        </div>
-    `;
-    articleDisplay.scrollIntoView({ behavior: 'smooth' });
-}
+    function showArticle(article) {
+        articleDisplay.innerHTML = `
+            <div class="article">
+                <h3>${article.title}</h3>
+                <p>${article.content}</p>
+            </div>
+        `;
+        articleDisplay.scrollIntoView({ behavior: 'smooth' });
+    }
 
-render();
-</script>
+    render();
+    </script>
 
-<span style="font-size: 18px;"><b>今回のアプリは如何だったでしょうか？他にも使えるアプリ、脳トレができるゲームや趣味に俳句、和歌などが利用できるサイトをご案内します。また大事な記録をサーバーに残せるサイトで、何かあった時に情報開示も指定できるサイトです。スマホのID、PWを記録しておくと安心です。</b></span><p><br></p>
+    <span style="font-size: 18px;"><b>今回のアプリは如何だったでしょうか？他にも使えるアプリ、脳トレができるゲームや趣味に俳句、和歌などが利用できるサイトをご案内します。また大事な記録をサーバーに残せるサイトで、何かあった時に情報開示も指定できるサイトです。スマホのID、PWを記録しておくと安心です。</b></span><p><br></p>
 
-<img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012085.jpg" style="display: block; margin: auto;"><br>
+    <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012085.jpg" style="display: block; margin: auto; max-width: 100%;"><br>
 
-<div style="text-align: center;"><b>以下より体験版をご確認ください。</b></div>
-<p style="text-align: center; "><img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012100.jpg" style="width: 200px;"></p>
-<div style="text-align: center;"><a href="https://life-supporter.jp/lp/HRSuykFf" style="color: rgb(0, 0, 255); font-size: 20px;">https://life-supporter.jp/lp/HRSuykFf</a></div>
-<p><br></p>
+    <div style="text-align: center;"><b>以下より体験版をご確認ください。</b></div>
+    <p style="text-align: center; "><img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012100.jpg" style="width: 200px;"></p>
+    <div style="text-align: center;"><a href="https://life-supporter.jp/lp/HRSuykFf" style="color: rgb(0, 0, 255); font-size: 20px; text-decoration: underline;">https://life-supporter.jp/lp/HRSuykFf</a></div>
+    <p><br></p>
 
-</body>
+</div> </body>
 </html>
