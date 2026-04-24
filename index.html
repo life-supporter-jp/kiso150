@@ -3,37 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>未来へのヒント - 終活サポート完全版</title>
+    <title>未来へのヒント - 終活サポート</title>
     <style>
         * { box-sizing: border-box; }
         body { 
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            background-color: #f4f7f9;
-            margin: 0; padding: 0; color: #333;
+            background-color: #f4f7f9; margin: 0; padding: 0; color: #333;
             display: flex; justify-content: center;
         }
 
+        /* PC最大幅 1000px */
         .container {
             width: 100%; max-width: 1000px; 
             background-color: #fff; padding: 40px 30px;
             min-height: 100vh; box-shadow: 0 0 30px rgba(0,0,0,0.05);
         }
 
-        /* メッセージエリア */
+        /* 【1】メッセージエリア */
         .message-section {
-            text-align: center; margin-bottom: 40px; padding: 25px;
+            text-align: center; margin-bottom: 30px; padding: 25px;
             border-left: 5px solid #007bff; background: #f0f7ff;
             border-radius: 0 15px 15px 0;
         }
         .copy-main { font-size: 26px; font-weight: bold; color: #007bff; margin-bottom: 15px; }
         .copy-sub { font-size: 18px; font-weight: bold; color: #555; margin-bottom: 8px; line-height: 1.4; }
 
+        /* 【2】メイン画像・タイトル */
+        .header-area { text-align: center; margin-bottom: 30px; }
         .header-image {
             max-width: 100%; height: auto; border-radius: 15px;
-            margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
+        .main-title { color: #007bff; font-size: 32px; margin: 10px 0; }
 
-        /* 検索・一覧エリア */
+        /* 【3】検索エリア */
         .search-box {
             position: sticky; top: 0; background: #fff;
             padding: 20px 0; z-index: 100; border-bottom: 2px solid #eee;
@@ -41,16 +44,17 @@
         #searchInput {
             width: 100%; padding: 18px 25px; font-size: 18px;
             border: 2px solid #007bff; border-radius: 40px; outline: none;
-            box-shadow: 0 4px 10px rgba(0,123,255,0.05);
         }
 
+        /* 【4】ページネーション */
         .pagination { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 25px 0; }
         .pagination button {
-            padding: 8px 14px; border: 1px solid #007bff; background: #fff;
-            color: #007bff; border-radius: 8px; cursor: pointer; font-size: 15px;
+            padding: 10px 18px; border: 1px solid #007bff; background: #fff;
+            color: #007bff; border-radius: 8px; cursor: pointer; font-size: 16px;
         }
         .pagination button.active { background: #007bff; color: #fff; font-weight: bold; }
 
+        /* 【5】一覧表示エリア */
         .list-container {
             border: 1px solid #ddd; border-radius: 15px;
             max-height: 450px; overflow-y: auto; 
@@ -58,27 +62,26 @@
         }
         .titles { margin: 0; padding: 0; list-style: none; }
         .titles li { 
-            padding: 18px 25px; cursor: pointer; border-bottom: 1px solid #eee;
-            font-size: 19px; color: #0000ee; text-decoration: underline; line-height: 1.5;
+            padding: 20px 30px; cursor: pointer; border-bottom: 1px solid #eee;
+            font-size: 20px; color: #0000ee; text-decoration: underline; line-height: 1.5;
         }
-        .titles li:hover { background-color: #f0f7ff; color: #0056b3; }
+        .titles li:hover { background-color: #f0f7ff; }
         .titles li.active-item { background-color: #007bff; color: #fff; text-decoration: none; font-weight: bold; }
 
-        /* 詳細カード */
+        /* 【6】詳細表示（タイトルの下に出るカード） */
         .detail-card {
             border: 3px solid #007bff; border-radius: 20px; overflow: hidden;
             display: none; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            margin-bottom: 50px; animation: fadeIn 0.4s ease-out;
+            margin-bottom: 50px; animation: fadeIn 0.4s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .detail-header { background-color: #f0f7ff; padding: 25px; font-size: 22px; font-weight: bold; color: #007bff; border-bottom: 2px solid #007bff; }
-        .detail-body { padding: 35px; font-size: 20px; line-height: 1.9; color: #333; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .detail-header { background-color: #f0f7ff; padding: 25px; font-size: 24px; font-weight: bold; color: #007bff; border-bottom: 2px solid #007bff; }
+        .detail-body { padding: 40px; font-size: 21px; line-height: 1.9; color: #333; }
 
-        /* フッター案内エリア */
+        /* 【7】フッター案内・CTA */
         .footer-info {
             background: #f8f9fa; border-radius: 20px; padding: 40px;
             margin-top: 60px; line-height: 1.8; font-size: 18px; color: #444;
-            border-top: 4px solid #eee;
         }
         .cta-button {
             display: block; width: 100%; max-width: 400px; margin: 30px auto 0;
@@ -87,14 +90,11 @@
             border-radius: 50px; box-shadow: 0 6px 20px rgba(255,111,97,0.4);
             transition: 0.3s;
         }
-        .cta-button:hover { transform: translateY(-3px); background: #ff5242; box-shadow: 0 8px 25px rgba(255,111,97,0.5); }
 
         @media (max-width: 600px) {
             .container { padding: 20px 15px; }
             .copy-main { font-size: 20px; }
-            .copy-sub { font-size: 15px; }
-            .detail-body { font-size: 18px; padding: 25px; }
-            .titles li { font-size: 17px; padding: 15px; }
+            .detail-body { font-size: 18px; }
         }
     </style>
 </head>
@@ -109,13 +109,13 @@
         <div class="copy-sub">【これからを整える、最高の「ありがとう」のために。】</div>
     </div>
 
-    <div style="text-align: center;">
+    <div class="header-area">
         <img src="https://life-supporter.jp/sp/hxySQ4ff/ct5NJq8Z/images/XS012099.jpg" class="header-image">
-        <h1 style="color: #007bff; font-size: 30px; margin-bottom: 10px;">未来へのヒント 一覧</h1>
+        <h1 class="main-title">未来へのヒント</h1>
     </div>
 
     <div class="search-box">
-        <input type="text" id="searchInput" placeholder="気になるキーワードを入力（例：介護、任意後見）">
+        <input type="text" id="searchInput" placeholder="気になるキーワードを入力...">
     </div>
 
     <div id="pagination" class="pagination"></div>
@@ -138,18 +138,14 @@
 </div>
 
 <script>
-// 全85件（主要サンプルと枠組み）
+// 1〜85番のデータをこの順番（昇順）で入れてください
 const articles = [
-    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "介護保険を利用するには、どうしたらよいか？介護保険サービスを利用できるのは65歳以上の人ですが、４0歳以上でも特定の条件があれば介護保険サービスを受けられます。<br><br>まずは市町村役場へ行き、要介護認定の申請を行いましょう。認定には約30日ほどかかります。" },
-    { title: "2、任意後見契約とはなんですか？", content: "将来、認知症などで判断能力が低下した時に備え、自分の代わりに財産管理などをしてもらう人をあらかじめ決めておく契約です。公正証書で作成します。" },
-    { title: "3、献体とはどういう事をするのですか？", content: "医学の発展のために、死後に自分の遺体を提供することです。大学や協会に生前登録が必要で、家族の同意も必須となります。" },
-    { title: "4、葬儀の生前契約とは何ですか？", content: "自分の葬儀の内容や費用をあらかじめ葬儀社と決めて契約しておくことです。残された家族の負担を減らすことができます。" },
-    { title: "5、エンディングノートには何を書くべきですか？", content: "自分の基本情報、資産、医療・介護への希望、葬儀の希望、家族へのメッセージなど、残された人が困らない情報を書きます。" },
-    // --- データの続きをここから追加できます ---
-    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "要介護認定の際、医師の意見書が必要です。普段の様子をよく知る医師がいることで、より正確な判定を受けられます。" }
+    { title: "1、介護保険を利用するには、どうしたらよいか？", content: "まずは市町村役場へ行き、要介護認定の申請を行いましょう。" },
+    { title: "2、任意後見契約とはなんですか？", content: "将来に備えて代理人を決める、公正証書による契約です。" },
+    { title: "3、献体とはどういう事をするのですか？", content: "医学の発展のために遺体を提供することです。生前登録が必要です。" },
+    // ...中略...
+    { title: "85、介護保険制度についてなぜ「かかりつけ医」が必要なの？", content: "正確な判定のために医師の意見書が必要になるからです。" }
 ];
-
-// ※ 実際の運用時は、上記のarticles配列にお手元の1〜85番のデータをすべて入れてください。
 
 let filtered = [...articles];
 const perPage = 10;
@@ -193,7 +189,7 @@ function showDetail(item) {
     document.getElementById('targetContent').innerHTML = item.content;
     view.style.display = 'block';
     
-    // PC/スマホ両方でカードがしっかり見える位置へスクロール
+    // カードが表示されたらそこまでスムーズにスクロール
     setTimeout(() => {
         view.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, 50);
